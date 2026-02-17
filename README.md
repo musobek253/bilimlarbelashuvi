@@ -1,43 +1,71 @@
-# 🏆 Bilimlar Belashuvi (Battle Quiz)
+# Aqlli Arqon - Battle Quiz
 
-**Bilimlar Belashuvi** — bu o'quvchilar uchun mo'ljallangan, real vaqt rejimida (real-time) bilimlarini sinash imkonini beruvchi interaktiv musobaqa platformasi. Loyiha "Arqon tortish" (Tug of War) mexanikasi asosida qurilgan bo'lib, to'g'ri javoblar orqali raqibni o'z tomoniga tortish vizual effekti bilan boyitilgan.
+Aqlli Arqon (Smart Rope) is a full-stack, real-time multiplayer quiz game designed as a Telegram Web App. Players compete in knowledge battles where correct answers pull the "rope" towards them, aiming to win the match.
 
-## 🚀 Asosiy Xususiyatlar
+## 🚀 Features
 
-- **Real-time Matchmaking**: Foydalanuvchilar o'z sinflari va fanlari bo'yicha avtomatik tarzda raqib topishlari mumkin.
-- **Interaktiv O'yin Jarayoni**: Har bir to'g'ri javob "arqonni" o'yinchi tomonga suradi, noto'g'ri javob esa raqibga ustunlik beradi.
-- **Telegram Web App Integratsiyasi**: Dastur bevosita Telegram ichida ishlaydi, bu esa foydalanuvchilarga qulaylik yaratadi.
-- **Fanlar va Sinflar**: Matematika va boshqa fanlar bo'yicha turli murakkablikdagi savollar bazasi.
-- **Reyting va Leaderboard**: Eng kuchli bilimdonlar ro'yxati va foydalanuvchi profili (g'alabalar, mag'lubiyatlar, reyting).
-- **Admin Panel**: Savollarni boshqarish, foydalanuvchilar ma'lumotlarini tahrirlash va tizim holatini kuzatish.
+- **Real-time Multiplayer**: Dynamic matchmaking and live game updates using Socket.io.
+- **Telegram Integration**: Seamless login and user profiles via Telegram Web Apps API.
+- **Microservices Architecture**: Modular services for scalability and maintainability.
+- **Admin Panel**: Comprehensive management tools for users and game data.
+- **Cross-Platform**: Optimized for mobile (Telegram) and desktop browsers.
 
-## 🛠 Texnologiyalar
+## 📁 Monorepo Structure
 
-Loyiha zamonaviy **Microservices** arxitekturasi asosida qurilgan:
+The project is organized as a monorepo using NPM workspaces:
 
-- **Frontend**: React.js, Vite, Zustand (state management), Tailwind CSS/Shadcn UI.
-- **Backend (Microservices)**:
-  - **Gateway**: Barcha so'rovlarni boshqaruvchi va Socket.io orqali real-time aloqani ta'minlovchi markaz.
-  - **Auth Service**: Foydalanuvchi autentifikatsiyasi (Telegram), profil boshqaruvi va ma'lumotlar bazasi (PostgreSQL + Prisma).
-  - **Game Service**: O'yin mantiqi, matchmaking (navbat tizimi) va Redis orqali tezkor ma'lumot almashinuvi.
-  - **Bot Service**: Telegram bot interfeysi.
-- **Infratuzilma**: Docker & Docker Compose, Redis, PostgreSQL.
+- `apps/gateway`: The entry point for all client requests. Handles HTTP proxying and WebSocket orchestration.
+- `apps/auth`: Manages user authentication, profiles, ratings, and leaderboard logic via Prisma (PostgreSQL).
+- `apps/game`: The core game engine. Handles matchmaking, game state management, and scoring logic.
+- `apps/frontend`: Modern React application (Vite) with a premium UI/UX design.
+- `apps/bot`: Telegram bot for entry, notifications, and administrative updates.
+- `packages/shared`: Shared types and constants used across multiple services.
 
-## 📦 O'rnatish va Ishga tushirish
+## 🛠 Tech Stack
 
-1.  **Repozitoriyani yuklab oling**:
-    ```bash
-    git clone https://github.com/musobek253/bilimlarbelashuvi.git
-    cd bilimlarbelashuvi
-    ```
+- **Backend**: Node.js, Express.js, Socket.io
+- **Database**: PostgreSQL (Prisma ORM)
+- **Frontend**: React, TypeScript, Vite, TailwindCSS, Framer Motion
+- **DevOps**: Docker, Docker Compose, Caddy (Reverse Proxy)
 
-2.  **Muhit o'zgaruvchilarini sozlang**:
-    `.env` faylini yarating va kerakli tokenlarni (Telegram Bot Token, DB URL va h.k.) kiriting.
+## 🛠 Local Development
 
-3.  **Docker orqali ishga tushiring**:
-    ```bash
-    docker compose up -d --build
-    ```
+### Prerequisites
 
-## 📝 Muallif
-Loyiha **Bilimlar Belashuvi** jamoasi tomonidan ta'limni o'yin orqali qiziqarli qilish maqsadida yaratilgan.
+- Node.js (v18+)
+- Docker & Docker Compose (optional but recommended)
+
+### Setup
+
+1. Clone the repository.
+2. Install dependencies at the root:
+   ```bash
+   npm install
+   ```
+3. Set up environment variables in the root `.env` file (see `.env.example` if available).
+
+### Running Services
+
+You can run services individually or all at once:
+
+```bash
+# Run all services concurrently (Dev Mode)
+npm run dev:all
+
+# Run individual services
+npm run dev:gateway
+npm run dev:auth
+npm run dev:game
+npm run dev:frontend
+npm run dev:bot
+```
+
+## 🚢 Deployment
+
+The project includes deployment scripts for automated staging and production updates:
+- `deploy.sh`: Manual deployment script.
+- `auto_deploy.sh`: CI/CD friendly deployment with automated builds and container restarts.
+
+## 📄 License
+
+Private Project - All rights reserved.
