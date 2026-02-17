@@ -1,0 +1,21 @@
+{
+  "name": "aqlli-arqon-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:frontend": "npm run dev --workspace=apps/frontend",
+    "dev:gateway": "npm run dev --workspace=apps/gateway",
+    "dev:auth": "npm run dev --workspace=apps/auth",
+    "dev:game": "npm run dev --workspace=apps/game",
+    "dev:bot": "npm run dev --workspace=apps/bot",
+    "dev:all": "concurrently \"npm run dev:gateway\" \"npm run dev:auth\" \"npm run dev:game\" \"npm run dev:frontend\" \"npm run dev:bot\"",
+    "build": "npm run build --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

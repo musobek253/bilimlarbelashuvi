@@ -1,0 +1,104 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: ./apps/gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - AUTH_SERVICE_URL=http://auth:3001
+      - GAME_SERVICE_URL=http://game:3002
+    depends_on:
+      - auth
+      - game
+    networks:
+      - app_network
+    restart: always
+
+  auth:
+    build:
+      context: ./apps/auth
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - REDIS_URL=redis://redis:6379
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - app_network
+    restart: always
+
+  game:
+    build:
+      context: ./apps/game
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - REDIS_URL=redis://redis:6379
+      - AUTH_SERVICE_URL=http://auth:3001
+    depends_on:
+      - redis
+      - auth
+    networks:
+      - app_network
+    restart: always
+
+  bot:
+    build:
+      context: ./apps/bot
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - GAME_URL=https://${DOMAIN}
+    networks:
+      - app_network
+    restart: always
+
+  postgres:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  frontend:
+    build:
+      context: ./apps/frontend
+    ports:
+      - "8080:80"
+    networks:
+      - app_network
+    depends_on:
+      - gateway
+    restart: always
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app_network
+    restart: always
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  redis_data:
+  postgres_data:

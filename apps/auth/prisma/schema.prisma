@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        BigInt   @id
+  firstName String   @map("first_name")
+  username  String?
+  photoUrl  String?  @map("photo_url")
+  language  String?  @map("language_code")
+  
+  grade     Int?
+  balance   Int      @default(100)
+  rating    Int      @default(1000)
+  wins      Int      @default(0)
+  losses    Int      @default(0)
+  role      String   @default("user")
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Subject {
+  id    Int     @id @default(autoincrement())
+  name  String
+  code  String  @unique // e.g., 'math', 'english'
+  
+  questions Question[]
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("subjects")
+}
+
+model Question {
+  id        Int      @id @default(autoincrement())
+  text      String   @map("question_text")
+  answer    String
+  options   String[] @default([]) // Array of strings: ["Option A", "Option B", "Option C", "Option D"]
+  
+  subjectId Int      @map("subject_id")
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  
+  difficulty Int     @default(1) // 1-11
+  allowedGrades Int[] @default([]) // Array of allowed grades: [6, 7, 8, 9, 10, 11]
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("questions")
+}
+
+model GradeConfig {
+  id                  Int      @id @default(autoincrement())
+  grade               Int      @unique
+  allowedSubjectCodes String[] @map("allowed_subject_codes") // Array of codes: ["math", "english"]
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("grade_configs")
+}
+
+model AsyncChallenge {
+  id              String   @id @default(uuid())
+  challengerId    BigInt   @map("challenger_id")
+  targetUserId    BigInt   @map("target_user_id")
+  subjectId       Int      @map("subject_id")
+  challengerScore Int?     @map("challenger_score")
+  challengerTime  Int?     @map("challenger_time")
+  targetScore     Int?     @map("target_score")
+  targetTime      Int?     @map("target_time")
+  status          String   @default("pending") // pending, completed
+  questions       Json     
+  challengerViewed Boolean @default(false) @map("challenger_viewed")
+  targetViewed     Boolean @default(false) @map("target_viewed")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("async_challenges")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    BigInt   @map("user_id")
+  type      String   // challenge_received, challenge_completed
+  message   String
+  data      Json?    
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("notifications")
+}
