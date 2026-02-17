@@ -414,7 +414,10 @@ const GameScreen = () => {
             <div className="flex flex-col h-screen bg-slate-50 overflow-hidden">
                 {/* Header */}
                 <header className="p-4 bg-white border-b flex justify-between items-center shadow-sm">
-                    <div className="flex items-center gap-2">
+                    <div
+                        className="flex items-center gap-2 cursor-pointer active:scale-95 transition-transform"
+                        onClick={() => window.location.reload()}
+                    >
                         <span className="text-2xl">🏆</span>
                         <h1 className="text-xl font-extrabold text-indigo-900 tracking-tight">Bilimlar Belashuvi</h1>
                     </div>

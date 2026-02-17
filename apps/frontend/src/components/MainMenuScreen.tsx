@@ -70,13 +70,16 @@ export default function MainMenuScreen() {
             {/* Header with Stats */}
             <header className="sticky top-0 z-20 w-full bg-white/80 backdrop-blur-md border-b border-indigo-50 shadow-sm p-4">
                 <div className="max-w-md mx-auto flex justify-between items-center">
-                    <div className="flex items-center gap-2">
+                    <div
+                        className="flex items-center gap-2 cursor-pointer active:scale-95 transition-transform"
+                        onClick={() => window.location.reload()}
+                    >
                         <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-xl shadow-lg shadow-indigo-200 text-white">
                             🏆
                         </div>
                         <div>
                             <div className="flex items-center gap-2">
-                                <h1 className="text-lg font-black text-slate-800 leading-none">BILIMLAR BELASHUVI</h1>
+                                <h1 className="text-lg font-black text-slate-800 leading-none uppercase">BILIMLAR BELASHUVI</h1>
                                 {notifications.length > 0 && (
                                     <span className="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
                                 )}

@@ -97,8 +97,10 @@ export default function LoginScreen() {
                 animate={{ y: 0, opacity: 1 }}
                 className="premium-card p-10 w-full max-w-md relative z-10 text-center"
             >
-                <div className="text-6xl mb-6">🎯</div>
-                <h1 className="text-4xl font-black text-indigo-950 mb-3 tracking-tight">Bilimlar Belashuvi</h1>
+                <div className="cursor-pointer active:scale-95 transition-transform" onClick={() => window.location.reload()}>
+                    <div className="text-6xl mb-6">🎯</div>
+                    <h1 className="text-4xl font-black text-indigo-950 mb-3 tracking-tight">Bilimlar Belashuvi</h1>
+                </div>
                 <p className="text-indigo-400 font-bold mb-8">Telegram orqali kirish</p>
 
                 {webSessionId ? (

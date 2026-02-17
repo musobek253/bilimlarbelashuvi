@@ -21,7 +21,7 @@ export default function GradeSelectionScreen() {
                 animate={{ y: 0, opacity: 1 }}
                 className="premium-card p-10 w-full max-w-2xl relative z-10"
             >
-                <div className="text-center mb-10">
+                <div className="text-center mb-10 cursor-pointer active:scale-95 transition-transform" onClick={() => window.location.reload()}>
                     <h1 className="text-4xl font-black text-indigo-950 mb-2 tracking-tight">Sinfingizni Tanlang</h1>
                     <p className="text-indigo-400 font-bold">Siz nechanchi sinfda o'qiysiz?</p>
                 </div>
